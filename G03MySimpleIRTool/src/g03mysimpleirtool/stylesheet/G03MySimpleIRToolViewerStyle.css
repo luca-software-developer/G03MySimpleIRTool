@@ -1,0 +1,12 @@
+.text-area {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area > .scroll-pane {
+    -fx-vbar-policy: always;
+}

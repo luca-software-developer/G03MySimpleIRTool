@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Guida utente di G03MySimpleIRTool</title>
+
+        <style>
+            body {
+                padding: 20px;
+                padding-right: 30px;
+                background-color: #f4f4f4;
+            }
+
+            h1, h2, h3, ul, p {
+                font-style: italic;
+            }
+
+            h1 {
+                text-align: center;
+            }
+
+            p {
+                text-align: justify;
+                line-height: 125%;
+            }
+
+            ul {
+                list-style-type: none;
+            }
+
+            body > ul {
+                padding-left: 0;
+            }
+
+            .gui-btn {
+                font-size: 75%;
+                font-weight: bold;
+                background-color: #ddd;
+                padding: 3px 7px 3px 7px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .scroll-to-top {
+                float: right;
+            }
+        </style>
+    </head>
+    <body id="top">
+        <h1>Guida utente di G03MySimpleIRTool</h1>
+
+        <h2>Indice</h2>
+        <ul>
+            <li><a href="#intro">1. Introduzione</a></li>
+            <li>
+                <a href="#basics">2. Funzionalità di base</a>
+                <ul>
+                    <li><a href="#select-dir">2.1. Selezione della directory</a></li>
+                    <li><a href="#submit-query">2.2. Sottomissione della query</a></li>
+                </ul>
+                <a href="#advanced">3. Funzionalità avanzate</a>
+                <ul>
+                    <li><a href="#view-docs">3.1. Visualizzazione dei documenti</a></li>
+                    <li><a href="#view-stats">3.2. Visualizzazione delle statistiche</a></li>
+                    <li><a href="#user-prefs">3.3. Preferenze dell'utente</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <hr>
+
+        <h2 id="intro">1. Introduzione</h2>
+        <p>
+            G03MySimpleIRTool è un'applicazione Java che, dato un corpus di
+            documenti testuali presenti in una directory, consente di elencare
+            quelli più rilevanti rispetto ad una query costituita da una o più
+            parole.
+        </p>
+        <p>
+            Il criterio di rilevanza da adottare attribuisce ad un documento uno
+            score tanto più alto quanto maggiore è la frequenza di occorrenza di
+            ciascuna parola che costituisce la query all’interno del documento.
+        </p>
+        <p>
+            L’applicazione G03MySimpleIRTool è un esempio semplificato di sistema
+            di Information Retrieval (IR).
+        </p>
+        <a class="scroll-to-top" href="#top">Top</a>
+        <h2 id="basics">2. Funzionalità di base</h2>
+        <h3 id="select-dir">2.1. Selezione della directory</h3>
+        <p>
+            Fare click sul pulsante
+            <span class="gui-btn">Apri cartella...</span>
+            per selezionare la directory contenente i documenti da analizzare.
+            L'applicazione supporta solo file di testo a formattazione semplice
+            (*.txt).
+        </p>
+
+        <a class="scroll-to-top" href="#top">Top</a>
+        <h3 id="submit-query">2.2. Sottomissione della query</h3>
+        <p>
+            Inserire una query costituita da una o più parole (token) e fare
+            click sul pulsante <span class="gui-btn">Esegui query</span>
+            per avviare l'elaborazione della query e la generazione dei risultati.
+            L'elenco dei documenti sarà presentato in ordine di rilevanza
+            decrescente rispetto alla query formulata. Per nome del documento
+            s'intende il nome del file.
+        </p>
+        <a class="scroll-to-top" href="#top">Top</a>
+        <h2 id="advanced">3. Funzionalità avanzate</h2>
+        <h3 id="view-docs">3.1. Visualizzazione dei documenti</h3>
+        <p>
+            Fare click sul pulsante <span class="gui-btn">Visualizza</span>
+            nel pannello dei risultati per visualizzare i documenti trovati
+            utilizzando lo strumento di visualizzazione integrato. Facendo doppio
+            click su un documento nel pannello "Vista directory" è possibile
+            visualizzare in qualsiasi momento i documenti della collezione.
+        </p>
+
+        <a class="scroll-to-top" href="#top">Top</a>
+        <h3 id="view-stats">3.2. Visualizzazione delle statistiche</h3>
+        <p>
+            Fare click sul pulsante <span class="gui-btn">Statistiche</span>
+            nel pannello dei risultati per visualizzare le statistiche sul
+            documento. Le statistiche sulla collezione di documenti sono sempre
+            visibili nell'apposito pannello dell'interfaccia grafica.
+        </p>
+        <a class="scroll-to-top" href="#top">Top</a>
+        <h3 id="user-prefs">3.3. Preferenze dell'utente</h3>
+        <p>
+            Attraverso la finestra di dialogo "Preferenze", disponibile nel menu
+            "Modifica" è possibile accedere alle impostazioni dell'applicazione.
+            La finestra di dialogo "Preferenze" è suddivisa in tre tab e consente
+            all'utente di attivare e configurare diverse funzionalità aggiuntive
+            quali il contributo allo score differenziato per il titolo e il corpo
+            del documento, il filtraggio delle stopwords con selezione di un file
+            esterno contenente la lista delle parole da filtrare e la possibilità
+            di scelta di un modello IR alternativo (tf-idf).
+        </p>
+        <a class="scroll-to-top" href="#top">Top</a>
+
+        <script>
+            function scrollToTop() {
+                window.scrollTo(0, 0);
+                window.getSelection().removeAllRanges();
+            }
+
+            function search(aString) {
+                return window.find(aString, false, false, true, false, true, false);
+            }
+        </script>
+    </body>
+</html>

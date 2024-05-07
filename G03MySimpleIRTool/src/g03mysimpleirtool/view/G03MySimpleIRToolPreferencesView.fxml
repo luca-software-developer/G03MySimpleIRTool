@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TabPane focusTraversable="false" prefHeight="200.0" prefWidth="200.0" stylesheets="@../stylesheet/G03MySimpleIRToolPreferencesStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab text="Contributo titolo/corpo">
+                    <content>
+                        <AnchorPane>
+                            <children>
+                                <VBox spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <children>
+                                        <Label text="Utilizzare questa impostazione per differenziare il contributo fornito allo score dal titolo e dal corpo del documento. Selezionare i contributi relativi al titolo e al corpo del documento." textFill="#000000b2" wrapText="true">
+                                            <font>
+                                                <Font name="System Italic" size="12.0" />
+                                            </font>
+                                        </Label>
+                                          <CheckBox fx:id="chkContributo" focusTraversable="false" mnemonicParsing="false" text="Abilita contributo differenziato titolo/corpo">
+                                              <font>
+                                                  <Font name="System Italic" size="12.0" />
+                                              </font>
+                                          </CheckBox>
+                                        <VBox fx:id="vbContributo" disable="true" spacing="20.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                            <children>
+                                                                <Label text="Contributo relativo al titolo">
+                                                                    <font>
+                                                                        <Font name="System Italic" size="12.0" />
+                                                                    </font>
+                                                                </Label>
+                                                            </children>
+                                                        </HBox>
+                                                        <Slider fx:id="sldContributoTitolo" focusTraversable="false" max="1.0" prefWidth="150.0" value="0.7" />
+                                                        <Label fx:id="lblContributoTitolo" alignment="CENTER" prefWidth="30.0" text="0.70" />
+                                                    </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                            <children>
+                                                                <Label text="Contributo relativo al corpo">
+                                                                    <font>
+                                                                        <Font name="System Italic" size="12.0" />
+                                                                    </font>
+                                                                </Label>
+                                                            </children>
+                                                        </HBox>
+                                                        <Slider fx:id="sldContributoCorpo" focusTraversable="false" max="1.0" prefWidth="150.0" value="0.3" />
+                                                        <Label fx:id="lblContributoCorpo" alignment="CENTER" prefWidth="30.0" text="0.30" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Filtraggio stopwords">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <children>
+                                        <Label text="Alcune parole sono più rilevanti di altre ai fini della comprensione di un documento. Le parole considerate irrilevanti e non discriminative (stopwords) possono essere eliminate riducendo la dimensione dei vettori: articoli, congiunzioni, particelle pronominali, verbi frequenti ecc. Attraverso questa sezione è possibile selezionare un file esterno contenente una lista di stopwords. Il file esterno deve presentare una stopword per ciascuna riga." textFill="#000000b2" wrapText="true">
+                                            <font>
+                                                <Font name="System Italic" size="12.0" />
+                                            </font>
+                                        </Label>
+                              <CheckBox fx:id="chkStopwords" focusTraversable="false" mnemonicParsing="false" text="Abilita filtraggio stopwords">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </CheckBox>
+                              <VBox fx:id="vbStopwords" disable="true">
+                                 <children>
+                                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                  <children>
+                                                      <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                          <children>
+                                                              <Label text="File esterno contenente la lista di stopwords">
+                                                                  <font>
+                                                                      <Font name="System Italic" size="12.0" />
+                                                                  </font>
+                                                              </Label>
+                                                          </children>
+                                                      </HBox>
+                                                      <TextField fx:id="txtStopwords" editable="false" focusTraversable="false" prefWidth="150.0" style="-fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
+                                             <stylesheets>
+                                                <URL value="@../stylesheet/G03MySimpleIRToolStyle.css" />
+                                                <URL value="@../stylesheet/G03MySimpleIRToolPreferencesStyle.css" />
+                                             </stylesheets>
+                                          </TextField>
+                                                      <Button focusTraversable="false" mnemonicParsing="false" onAction="#sfogliaFileStopwords" prefWidth="30.0" text="..." />
+                                                  </children>
+                                              </HBox>
+                                 </children>
+                              </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Selezione modello IR">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                    <children>
+                                        <Label text="Per Document Frequency (df) si intende il numero di documenti che contengono un certo termine. L'inverso del Document Frequency (Inverse Document Frequency, idf), cioè la rarità di un termine all'interno della collezione, è una buona misura della significatività di un termine. Attraverso questa sezione è possibile selezionare un modello IR (Information Retrieval) alternativo (tf-idf)." textFill="#000000b2" wrapText="true">
+                                            <font>
+                                                <Font name="System Italic" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="Selezione del modello da utilizzare">
+                                                            <font>
+                                                                <Font name="System Italic" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <ChoiceBox fx:id="cbModello" focusTraversable="false" onAction="#scegliModello" prefWidth="185.0" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </TabPane>
+    </children>
+</AnchorPane>

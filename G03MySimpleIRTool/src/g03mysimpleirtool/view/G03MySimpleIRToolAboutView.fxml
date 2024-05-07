@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="g03mysimpleirtool.controller.G03MySimpleIRToolAboutController">
+    <children>
+        <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icon/icon.png" />
+                    </image>
+                </ImageView>
+                <Label text="G03MySimpleIRTool" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+                <Label text="Programmazione Java Avanzata 2024 @ DIEM UNISA" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="System Italic" size="15.0" />
+                    </font>
+                </Label>
+                <Label text="G03MySimpleIRTool è un semplice sistema di Information Retrieval (IR). Dato un corpus di documenti testuali presenti in una directory, l'applicazione consente di elencare quelli più rilevanti rispetto ad una query costituita da una o più parole." textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                    </VBox.margin>
+                </Label>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
