@@ -1,3 +1,13 @@
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
     -fx-border-color: transparent;
 }
+
+.slider:focused .thumb {
+    -fx-padding: 0.583333em;
+    -fx-background-radius: 1.0em;
+    -fx-background-insets: 0, 1, 2;
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);
+    -fx-background-color:
+        linear-gradient(to bottom, derive(-fx-text-box-border, -20%),
+        derive(-fx-text-box-border, -30%)), -fx-inner-border, -fx-body-color;
+}

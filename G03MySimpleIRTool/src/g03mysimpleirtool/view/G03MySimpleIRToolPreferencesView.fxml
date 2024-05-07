@@ -48,7 +48,7 @@
                                                                 </Label>
                                                             </children>
                                                         </HBox>
-                                                        <Slider fx:id="sldContributoTitolo" focusTraversable="false" max="1.0" prefWidth="150.0" value="0.7" />
+                                                        <Slider fx:id="sldContributoTitolo" focusTraversable="false" max="1.0" prefWidth="150.0" stylesheets="@../stylesheet/G03MySimpleIRToolPreferencesStyle.css" value="0.7" />
                                                         <Label fx:id="lblContributoTitolo" alignment="CENTER" prefWidth="30.0" text="0.70" />
                                                     </children>
                                                 </HBox>
@@ -63,7 +63,7 @@
                                                                 </Label>
                                                             </children>
                                                         </HBox>
-                                                        <Slider fx:id="sldContributoCorpo" focusTraversable="false" max="1.0" prefWidth="150.0" value="0.3" />
+                                                        <Slider fx:id="sldContributoCorpo" focusTraversable="false" max="1.0" prefWidth="150.0" stylesheets="@../stylesheet/G03MySimpleIRToolPreferencesStyle.css" value="0.3" />
                                                         <Label fx:id="lblContributoCorpo" alignment="CENTER" prefWidth="30.0" text="0.30" />
                                                     </children>
                                                 </HBox>

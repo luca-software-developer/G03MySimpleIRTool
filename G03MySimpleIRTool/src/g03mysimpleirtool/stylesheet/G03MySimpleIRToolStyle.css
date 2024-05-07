@@ -10,19 +10,16 @@
     -fx-highlight-fill: derive(-fx-control-inner-background,-20%);
     -fx-background-color:
         linear-gradient(to bottom, derive(-fx-text-box-border, -10%),
-        -fx-text-box-border),
-        linear-gradient(from 0px 0px to 0px 5px,
-        derive(-fx-control-inner-background, -9%),
-        -fx-control-inner-background);
+        -fx-text-box-border), linear-gradient(from 0px 0px to 0px 5px,
+        derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
 }
 
 .text-area:focused .content {
     -fx-background-radius: 2;
     -fx-background-insets: 0;
     -fx-background-color:
-        linear-gradient(from 0px 0px to 0px 4px,
-        derive(-fx-control-inner-background, -9%),
-        -fx-control-inner-background);
+        linear-gradient(from 0px 0px to 0px 4px, derive(-fx-control-inner-background,
+        -9%), -fx-control-inner-background);
 }
 
 .bg-transparent {
