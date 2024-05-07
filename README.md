@@ -9,4 +9,4 @@
 G03MySimpleIRTool è un'applicazione Java che, dato un corpus di documenti testuali presenti in una directory, consente di elencare quelli più rilevanti rispetto ad una query costituita da una o più parole.
 
 ## Screenshot
-![screenshot-irt](https://github.com/luca-software-developer/G03MySimpleIRTool/assets/67876436/85b063e9-3a06-4d96-b734-fce0f1081081)
+![screenshot-irt](https://github.com/luca-software-developer/G03MySimpleIRTool/assets/67876436/f2d6c969-ed5f-4422-af67-6dedd9576c0c)
