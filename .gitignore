@@ -19,6 +19,12 @@
 *.tar.gz
 *.rar
 
+# Cache files
+*.bin
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+/G03MySimpleIRTool/nbproject/private/
+/G03MySimpleIRTool/build/
+/G03MySimpleIRTool/dist/
