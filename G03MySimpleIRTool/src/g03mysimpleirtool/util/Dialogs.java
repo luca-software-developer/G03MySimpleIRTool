@@ -3,9 +3,13 @@ package g03mysimpleirtool.util;
 import g03mysimpleirtool.G03MySimpleIRTool;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_ICON;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_NAME;
+import static g03mysimpleirtool.G03MySimpleIRTool.APP_STATS_ICON;
+import static g03mysimpleirtool.G03MySimpleIRTool.APP_STATS_VIEW;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_VIEWER_ICON;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_VIEWER_VIEW;
+import g03mysimpleirtool.controller.G03MySimpleIRToolStatsController;
 import g03mysimpleirtool.controller.G03MySimpleIRToolViewerController;
+import g03mysimpleirtool.model.TFDocumentModel;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -146,8 +150,25 @@ public class Dialogs {
      */
     public static void showDocumentViewer(Path path) {
         try {
-            showStage(APP_VIEWER_VIEW, "Visualizzatore di " + APP_NAME,
+            showStage(APP_VIEWER_VIEW, path.getFileName().toString(),
                     APP_VIEWER_ICON, true, new G03MySimpleIRToolViewerController(path));
+        } catch (IOException ex) {
+            showError("Errore durante l'apertura del visualizzatore.");
+        }
+    }
+
+    /**
+     * Apre il visualizzatore di statistiche integrato per mostrare le
+     * statistiche del documento al {@code Path} specificato.
+     *
+     * @param path {@code Path} del documento.
+     */
+    public static void showStatsViewer(Path path) {
+        try {
+            showStage(APP_STATS_VIEW,
+                    "Statistiche di " + path.getFileName().toString(),
+                    APP_STATS_ICON, true, new G03MySimpleIRToolStatsController(
+                            TFDocumentModel.fromPath(path.toString())));
         } catch (IOException ex) {
             showError("Errore durante l'apertura del visualizzatore.");
         }

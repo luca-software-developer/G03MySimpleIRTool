@@ -3,8 +3,8 @@ package g03mysimpleirtool.controller;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_STATS_ICON;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_STATS_VIEW;
 import g03mysimpleirtool.model.TFDocumentModel;
-import g03mysimpleirtool.util.Dialogs;
 import static g03mysimpleirtool.util.Dialogs.showDocumentViewer;
+import static g03mysimpleirtool.util.Dialogs.showStage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -78,7 +78,7 @@ public class G03MySimpleIRToolResultController implements Initializable {
      */
     @FXML
     private void statistiche(ActionEvent actionEvent) throws IOException {
-        Dialogs.showStage(APP_STATS_VIEW,
+        showStage(APP_STATS_VIEW,
                 "Statistiche di " + model.getPath().getFileName().toString(),
                 APP_STATS_ICON, true, new G03MySimpleIRToolStatsController(model));
     }

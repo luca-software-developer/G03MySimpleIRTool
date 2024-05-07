@@ -38,7 +38,7 @@ public class VectorDocumentModel extends DocumentModel {
      */
     public VectorDocumentModel(String path, Map<String, Double> vector) {
         super(path);
-        this.titleVector = vector;
+        this.titleVector = new HashMap<>();
         this.contentVector = vector;
     }
 
@@ -85,13 +85,24 @@ public class VectorDocumentModel extends DocumentModel {
      * @return Restituisce il vettore del documento.
      */
     public Map<String, Double> getVector() {
+        return getVector(true);
+    }
+
+    /**
+     * Restituisce il vettore del documento.
+     *
+     * @param weighted Indica se il contributo differenziato deve essere
+     * applicato.
+     * @return Restituisce il vettore del documento.
+     */
+    public Map<String, Double> getVector(boolean weighted) {
         Map<String, Double> vector = new HashMap<>();
         Map<String, Double> title = getTitleVector();
         Map<String, Double> content = getContentVector();
 
         //  Se l'utente ha configurato il contributo differenziato titolo/corpo...
         final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
-        if (preferences.getBoolean("contributoDifferenziato", false)) {
+        if (weighted && preferences.getBoolean("contributoDifferenziato", false)) {
 
             //  Ottiene i pesi dalle preferenze dell'utente...
             final double titleWeight = preferences.getDouble("contributoTitolo", 0.50);
@@ -145,27 +156,48 @@ public class VectorDocumentModel extends DocumentModel {
      * @return Restituisce la similarità di coseno.
      */
     public double computeSimilarity(VectorDocumentModel model) {
-        try {
-            Map<String, Double> vector1 = getVector();
-            Map<String, Double> vector2 = model.getVector();
-            if (!vector1.keySet().equals(vector2.keySet())) {
-                throw new IllegalArgumentException("I set di chiavi dei due vettori devono coincidere.");
-            }
-            Map<String, Double> merged = new HashMap<>(vector1);
-            vector2.forEach((key, value) -> merged.merge(key, value, (v1, v2) -> v1 * v2));
-            List<Double> values = merged.values().stream().collect(Collectors.toList());
-            BigDecimal dot = new BigDecimal(values.stream().reduce(0D, (current, value) -> current + value));
-            double modulo1 = Math.sqrt(vector1.values().stream().reduce(0D, (current, value) -> current + value * value));
-            double modulo2 = Math.sqrt(vector2.values().stream().reduce(0D, (current, value) -> current + value * value));
-            if (modulo1 * modulo2 == 0) {
-                return 0;
-            }
-            dot = dot.divide(new BigDecimal(modulo1 * modulo2), MathContext.DECIMAL32.getPrecision(), RoundingMode.HALF_EVEN);
-            return dot.doubleValue();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        return computeSimilarity(model, true, true);
+    }
+
+    /**
+     * Restituisce la similarità di coseno.
+     *
+     * @param model Modello del documento da confrontare.
+     * @param thisWeighted Indica se il contributo differenziato deve essere
+     * applicato per il vettore corrente.
+     * @return Restituisce la similarità di coseno.
+     */
+    public double computeSimilarity(VectorDocumentModel model, boolean thisWeighted) {
+        return computeSimilarity(model, thisWeighted, true);
+    }
+
+    /**
+     * Restituisce la similarità di coseno.
+     *
+     * @param model Modello del documento da confrontare.
+     * @param thisWeighted Indica se il contributo differenziato deve essere
+     * applicato per il vettore corrente.
+     * @param otherWeighted Indica se il contributo differenziato deve essere
+     * applicato per l'altro vettore.
+     * @return Restituisce la similarità di coseno.
+     */
+    public double computeSimilarity(VectorDocumentModel model, boolean thisWeighted, boolean otherWeighted) {
+        Map<String, Double> vector1 = getVector(thisWeighted);
+        Map<String, Double> vector2 = model.getVector(otherWeighted);
+        if (!vector1.keySet().equals(vector2.keySet())) {
+            throw new IllegalArgumentException("I set di chiavi dei due vettori devono coincidere.");
+        }
+        Map<String, Double> merged = new HashMap<>(vector1);
+        vector2.forEach((key, value) -> merged.merge(key, value, (v1, v2) -> v1 * v2));
+        List<Double> values = merged.values().stream().collect(Collectors.toList());
+        BigDecimal dot = new BigDecimal(values.stream().reduce(0D, (current, value) -> current + value));
+        double modulo1 = Math.sqrt(vector1.values().stream().reduce(0D, (current, value) -> current + value * value));
+        double modulo2 = Math.sqrt(vector2.values().stream().reduce(0D, (current, value) -> current + value * value));
+        if (modulo1 * modulo2 == 0) {
             return 0;
         }
+        dot = dot.divide(new BigDecimal(modulo1 * modulo2), MathContext.DECIMAL32.getPrecision(), RoundingMode.HALF_EVEN);
+        return dot.doubleValue();
     }
 
     /**

@@ -1,7 +1,11 @@
 package g03mysimpleirtool.controller;
 
+import g03mysimpleirtool.model.Dictionary;
 import g03mysimpleirtool.model.TFDocumentModel;
 import java.net.URL;
+import java.util.DoubleSummaryStatistics;
+import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
@@ -80,20 +84,43 @@ public class G03MySimpleIRToolStatsController implements Initializable {
      * Effettua il calcolo delle statistiche sul documento.
      */
     private void computeStats() {
-        final String mostFrequentWord = model.getVector().entrySet().stream()
+        final DoubleSummaryStatistics statistics = model.getVector(false).entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .collect(Collectors.summarizingDouble(Map.Entry::getValue));
+        final String mostFrequentWord = model.getVector(false).entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
                 .max((e1, e2) -> e1.getValue().compareTo(e2.getValue())).get().getKey();
+        final String leastFrequentWord = model.getVector(false).entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .min((e1, e2) -> e1.getValue().compareTo(e2.getValue())).get().getKey();
+        final long maxFrequency = (long) statistics.getMax();
+        final long minFrequency = (long) statistics.getMin();
+        final double avgFrequency = statistics.getAverage();
+        final long distinctWords = model.getVector(false).entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .count();
+        final long totalWords = model.getVector(false).entrySet().stream()
+                .filter(entry -> entry.getValue() > 0)
+                .collect(Collectors.summingDouble(entry -> entry.getValue())).longValue();
+        stats.clear();
         stats.add(new Pair<>("Parola più frequente",
                 mostFrequentWord.substring(0, 1).toUpperCase()
                 + mostFrequentWord.substring(1)));
-        final long distinctWords = model.getVector().entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .count();
+        stats.add(new Pair<>("Parola meno frequente",
+                leastFrequentWord.substring(0, 1).toUpperCase()
+                + leastFrequentWord.substring(1)));
+        stats.add(new Pair<>("Frequenza massima",
+                Long.toString(maxFrequency)));
+        stats.add(new Pair<>("Frequenza media",
+                String.format(Locale.US, "%.2f", avgFrequency)));
+        stats.add(new Pair<>("Frequenza minima",
+                Long.toString(minFrequency)));
         stats.add(new Pair<>("Numero di parole distinte",
                 Long.toString(distinctWords)));
-        final long totalWords = model.getVector().entrySet().stream()
-                .collect(Collectors.summingDouble(entry -> entry.getValue())).longValue();
         stats.add(new Pair<>("Numero di parole totali",
                 Long.toString(totalWords)));
+        stats.add(new Pair<>("Dimensione del dizionario",
+                Integer.toString(new Dictionary(model).getBagOfWords().size())));
     }
 
 }

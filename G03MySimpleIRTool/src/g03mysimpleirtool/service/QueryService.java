@@ -101,7 +101,7 @@ public class QueryService extends Service<ObservableList<TFDocumentModel>> {
                     models.stream()
                             .map(model
                                     -> new Pair<>(model, tfidfModel.computeSimilarity(
-                                    TFIDFDocumentModel.fromCollection(model, models))))
+                                    TFIDFDocumentModel.fromCollection(model, models), false)))
                             .filter(similarity -> similarity.getValue() > 0)
                             .sorted((p1, p2) -> p2.getValue().compareTo(p1.getValue()))
                             .forEach(similarity -> {
@@ -111,7 +111,7 @@ public class QueryService extends Service<ObservableList<TFDocumentModel>> {
                 } else {
                     //  Calcola la similarità con i modelli tf della collezione.
                     models.stream()
-                            .map(model -> new Pair<>(model, queryModel.computeSimilarity(model)))
+                            .map(model -> new Pair<>(model, queryModel.computeSimilarity(model, false)))
                             .filter(similarity -> similarity.getValue() > 0)
                             .sorted((p1, p2) -> p2.getValue().compareTo(p1.getValue()))
                             .forEach(similarity -> {
