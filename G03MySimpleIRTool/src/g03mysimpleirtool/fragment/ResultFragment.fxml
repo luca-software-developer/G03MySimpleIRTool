@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="item" stylesheets="@../stylesheet/G03MySimpleIRToolResultStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="entry" alignment="CENTER_LEFT" spacing="10.0" styleClass="item" stylesheets="@../stylesheet/G03MySimpleIRToolResultStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
             <image>

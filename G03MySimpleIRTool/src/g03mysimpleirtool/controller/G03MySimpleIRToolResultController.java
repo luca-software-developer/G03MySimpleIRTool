@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
 
 /**
  * La classe {@code G03MySimpleIRToolResultController} rappresenta il controller
@@ -20,6 +22,9 @@ import javafx.scene.control.Label;
  * grafica.
  */
 public class G03MySimpleIRToolResultController implements Initializable {
+
+    @FXML
+    private HBox entry;
 
     @FXML
     private Label lblName;
@@ -58,6 +63,12 @@ public class G03MySimpleIRToolResultController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblName.setText(model.getPath().getFileName().toString());
+        entry.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)
+                    && event.getClickCount() == 2) {
+                showDocumentViewer(model.getPath());
+            }
+        });
     }
 
     /**

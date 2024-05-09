@@ -49,7 +49,7 @@ public class G03MySimpleIRToolStatsController implements Initializable {
     /**
      * Definisce la lista osservabile di statistiche sul documento.
      */
-    private ObservableList<Pair<String, String>> stats;
+    private ObservableList<Pair<String, String>> statistics;
 
     /**
      * Costruttore.
@@ -79,30 +79,30 @@ public class G03MySimpleIRToolStatsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        stats = FXCollections.observableArrayList();
+        statistics = FXCollections.observableArrayList();
         tcProprieta.setCellValueFactory(cellData
                 -> new SimpleStringProperty(cellData.getValue().getKey()));
         tcValore.setCellValueFactory(cellData
                 -> new SimpleStringProperty(cellData.getValue().getValue()));
-        tblStatistiche.setItems(stats);
-        computeStats();
+        tblStatistiche.setItems(statistics);
+        computeStatistics();
     }
 
     /**
      * Effettua il calcolo delle statistiche sul documento.
      */
-    private void computeStats() {
+    private void computeStatistics() {
         final Set<TFDocumentModel> current = Collections.singleton(model);
         final Map<String, Long> wordFrequencies = calculateWordFrequencies(current);
-        final DoubleSummaryStatistics statistics = calculateSummaryStatistics(wordFrequencies);
+        final DoubleSummaryStatistics stats = calculateSummaryStatistics(wordFrequencies);
         final UnaryOperator<String> capitalize = s -> s.isEmpty()
                 ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
-        stats.clear();
+        statistics.clear();
         addToStatistics("Parola più frequente", capitalize.apply(findMostFrequentWord(wordFrequencies)));
         addToStatistics("Parola meno frequente", capitalize.apply(findLeastFrequentWord(wordFrequencies)));
-        addToStatistics("Frequenza massima", Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
-        addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", statistics.getAverage()));
-        addToStatistics("Frequenza minima", Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
+        addToStatistics("Frequenza massima", Long.toString(stats.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) stats.getMax()));
+        addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", stats.getAverage()));
+        addToStatistics("Frequenza minima", Long.toString(stats.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) stats.getMin()));
         addToStatistics("Numero di parole distinte", Long.toString(calculateDistinctWords(wordFrequencies)));
         addToStatistics("Numero di parole totali", Long.toString(calculateTotalWords(wordFrequencies)));
         addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(current).getBagOfWords().size()));
@@ -117,7 +117,7 @@ public class G03MySimpleIRToolStatsController implements Initializable {
      * @param value Valore della proprietà.
      */
     private void addToStatistics(String property, String value) {
-        stats.add(new Pair<>(property, value));
+        statistics.add(new Pair<>(property, value));
     }
 
 }
