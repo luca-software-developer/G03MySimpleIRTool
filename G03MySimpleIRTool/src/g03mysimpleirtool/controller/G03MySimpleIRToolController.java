@@ -25,6 +25,12 @@ import static g03mysimpleirtool.util.Dialogs.showDocumentViewer;
 import static g03mysimpleirtool.util.Dialogs.showError;
 import static g03mysimpleirtool.util.Dialogs.showStage;
 import static g03mysimpleirtool.util.Dialogs.showStatsViewer;
+import static g03mysimpleirtool.util.Statistics.calculateDistinctWords;
+import static g03mysimpleirtool.util.Statistics.calculateSummaryStatistics;
+import static g03mysimpleirtool.util.Statistics.calculateTotalWords;
+import static g03mysimpleirtool.util.Statistics.calculateWordFrequencies;
+import static g03mysimpleirtool.util.Statistics.findLeastFrequentWord;
+import static g03mysimpleirtool.util.Statistics.findMostFrequentWord;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -32,12 +38,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.DoubleSummaryStatistics;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.function.UnaryOperator;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -496,53 +501,31 @@ public class G03MySimpleIRToolController implements Initializable {
             return;
         }
         final Set<TFDocumentModel> current = currentModels.get();
-        final Map<String, Long> wordFrequencies = new HashMap<>();
-        current.stream()
-                .flatMap(model -> model.getVector(false).entrySet().stream())
-                .forEach(entry -> {
-                    wordFrequencies.put(entry.getKey(),
-                            wordFrequencies.getOrDefault(entry.getKey(), 0L)
-                            + entry.getValue().longValue());
-                });
-        final DoubleSummaryStatistics statistics = wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.summarizingDouble(Map.Entry::getValue));
-        final String mostFrequentWord = wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .max((e1, e2) -> e1.getValue().compareTo(e2.getValue())).get().getKey();
-        final String leastFrequentWord = wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .min((e1, e2) -> e1.getValue().compareTo(e2.getValue())).get().getKey();
-        final long maxFrequency = (long) statistics.getMax();
-        final long minFrequency = (long) statistics.getMin();
-        final double avgFrequency = statistics.getAverage();
-        final long distinctWords = wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .count();
-        final long totalWords = wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.summingDouble(entry -> entry.getValue())).longValue();
+        final Map<String, Long> wordFrequencies = calculateWordFrequencies(current);
+        final DoubleSummaryStatistics statistics = calculateSummaryStatistics(wordFrequencies);
+        final UnaryOperator<String> capitalize = s -> s.isEmpty()
+                ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
         currentStats.clear();
-        currentStats.add(new Pair<>("Parola più frequente",
-                mostFrequentWord.substring(0, 1).toUpperCase()
-                + mostFrequentWord.substring(1)));
-        currentStats.add(new Pair<>("Parola meno frequente",
-                leastFrequentWord.substring(0, 1).toUpperCase()
-                + leastFrequentWord.substring(1)));
-        currentStats.add(new Pair<>("Frequenza massima",
-                Long.toString(maxFrequency)));
-        currentStats.add(new Pair<>("Frequenza media",
-                String.format(Locale.US, "%.2f", avgFrequency)));
-        currentStats.add(new Pair<>("Frequenza minima",
-                Long.toString(minFrequency)));
-        currentStats.add(new Pair<>("Numero di parole distinte",
-                Long.toString(distinctWords)));
-        currentStats.add(new Pair<>("Numero di parole totali",
-                Long.toString(totalWords)));
-        currentStats.add(new Pair<>("Dimensione del dizionario",
-                Integer.toString(new Dictionary(current).getBagOfWords().size())));
-        currentStats.add(new Pair<>("Numero di documenti",
-                Integer.toString(current.size())));
+        addToStatistics("Parola più frequente", capitalize.apply(findMostFrequentWord(wordFrequencies)));
+        addToStatistics("Parola meno frequente", capitalize.apply(findLeastFrequentWord(wordFrequencies)));
+        addToStatistics("Frequenza massima", Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
+        addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", statistics.getAverage()));
+        addToStatistics("Frequenza minima", Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
+        addToStatistics("Numero di parole distinte", Long.toString(calculateDistinctWords(wordFrequencies)));
+        addToStatistics("Numero di parole totali", Long.toString(calculateTotalWords(wordFrequencies)));
+        addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(current).getBagOfWords().size()));
+        addToStatistics("Numero di documenti", Integer.toString(current.size()));
+    }
+
+    /**
+     * Aggiunge la coppia proprietà-valore alle statistiche per la collezione
+     * corrente.
+     *
+     * @param property Nome della proprietà.
+     * @param value Valore della proprietà.
+     */
+    private void addToStatistics(String property, String value) {
+        currentStats.add(new Pair<>(property, value));
     }
 
     /**

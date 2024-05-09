@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
@@ -90,9 +92,12 @@ public class TFDocumentModel extends VectorDocumentModel {
      * @throws IOException Sollevata in caso di errore di I/O.
      */
     private static Map<String, Long> computeTitleVector(String path) throws IOException {
-        return Stream.of(removeStopwords(sanitizeText(getLineStream(path)
-                .findFirst().get().toLowerCase().trim())).split("\\s+"))
-                .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
+        Optional<String> firstLine = getLineStream(path).findFirst();
+        if (firstLine.isPresent() && !firstLine.get().trim().isEmpty()) {
+            return Stream.of(removeStopwords(sanitizeText(firstLine.get().toLowerCase().trim())).split("\\s+"))
+                    .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
+        }
+        return new HashMap<>();
     }
 
     /**

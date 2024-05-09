@@ -114,10 +114,13 @@ public class PreProcessingService extends Service<Set<TFDocumentModel>> {
                                 try {
                                     //  Calcola il modello a partire dal documento...
                                     TFDocumentModel computed = TFDocumentModel.fromPath(path.toString());
-                                    //  ... lo aggiunge all'insieme dei modelli correnti...
-                                    current.add(computed);
-                                    //  ... e anche alla mappa di tutti i modelli.
-                                    models.put(path.toString(), computed);
+                                    //  ... se il vettore è non vuoto...
+                                    if (!computed.getVector().isEmpty()) {
+                                        //  ... lo aggiunge all'insieme dei modelli correnti...
+                                        current.add(computed);
+                                        //  ... e anche alla mappa di tutti i modelli.
+                                        models.put(path.toString(), computed);
+                                    }
                                 } catch (IOException ex) {
                                     Platform.runLater(() -> showError("Errore durante l'apertura del documento \""
                                             + path.toAbsolutePath() + "\"."));
