@@ -69,7 +69,10 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -294,6 +297,7 @@ public class G03MySimpleIRToolController implements Initializable {
      */
     private void initResultsView() {
         lstResults.setCellFactory((ListView<TFDocumentModel> param) -> new ResultItemListCellImpl());
+
     }
 
     /**
@@ -539,6 +543,44 @@ public class G03MySimpleIRToolController implements Initializable {
                 Integer.toString(new Dictionary(current).getBagOfWords().size())));
         currentStats.add(new Pair<>("Numero di documenti",
                 Integer.toString(current.size())));
+    }
+
+    /**
+     * Gestisce l'evento di trascinamento di un folder nell'area di
+     * visualizzazione della directory ({@code TreeView}).
+     *
+     * @param dragEvent Evento JavaFX di trascinamento.
+     */
+    @FXML
+    private void trascinaFolder(DragEvent dragEvent) {
+        if (dragEvent.getGestureSource() != treeView && dragEvent.getDragboard().hasFiles()) {
+            dragEvent.acceptTransferModes(TransferMode.COPY);
+        }
+        dragEvent.consume();
+    }
+
+    /**
+     * Gestisce l'evento di rilascio di un folder nell'area di visualizzazione
+     * della directory ({@code TreeView}).
+     *
+     * @param dragEvent Evento JavaFX di trascinamento.
+     * @throws IOException Sollevata in caso di errore di I/O.
+     */
+    @FXML
+    private void rilasciaFolder(DragEvent dragEvent) throws IOException {
+        Dragboard dragboard = dragEvent.getDragboard();
+        boolean success = false;
+        if (dragboard.hasFiles()) {
+            success = true;
+            File directory = dragboard.getFiles().get(0);
+            if (directory.isDirectory()) {
+                currentDirectory.set(directory);
+                mainStage.setTitle(currentDirectory.get().getAbsolutePath() + " - " + APP_NAME);
+                performIndexing(this::performPreProcessing);
+            }
+        }
+        dragEvent.setDropCompleted(success);
+        dragEvent.consume();
     }
 
     /**
