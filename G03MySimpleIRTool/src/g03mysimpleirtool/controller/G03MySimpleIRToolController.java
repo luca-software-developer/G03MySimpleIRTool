@@ -185,7 +185,7 @@ public class G03MySimpleIRToolController implements Initializable {
     private DoubleProperty currentProgress;
 
     /**
-     * Definisce la directory attualmente aperta.
+     * Definisce la file attualmente aperta.
      */
     private ObjectProperty<File> currentDirectory;
 
@@ -286,7 +286,7 @@ public class G03MySimpleIRToolController implements Initializable {
     }
 
     /**
-     * Inizializza la visualizzazione della directory corrente.
+     * Inizializza la visualizzazione della file corrente.
      */
     private void initTreeView() {
         treeView.setCellFactory((TreeView<Path> param) -> new DirectoryItemTreeCellImpl());
@@ -547,35 +547,43 @@ public class G03MySimpleIRToolController implements Initializable {
 
     /**
      * Gestisce l'evento di trascinamento di un folder nell'area di
-     * visualizzazione della directory ({@code TreeView}).
+     * visualizzazione della file ({@code TreeView}).
      *
      * @param dragEvent Evento JavaFX di trascinamento.
      */
     @FXML
     private void trascinaFolder(DragEvent dragEvent) {
-        if (dragEvent.getGestureSource() != treeView && dragEvent.getDragboard().hasFiles()) {
-            dragEvent.acceptTransferModes(TransferMode.COPY);
+        final Dragboard dragboard = dragEvent.getDragboard();
+        if (dragEvent.getGestureSource() != treeView
+                && dragboard.hasFiles()) {
+            if (dragboard.getFiles().size() == 1
+                    && dragboard.getFiles().get(0).isDirectory()) {
+                dragEvent.acceptTransferModes(TransferMode.COPY);
+            } else {
+                dragEvent.acceptTransferModes(TransferMode.NONE);
+            }
         }
         dragEvent.consume();
     }
 
     /**
      * Gestisce l'evento di rilascio di un folder nell'area di visualizzazione
-     * della directory ({@code TreeView}).
+     * della file ({@code TreeView}).
      *
      * @param dragEvent Evento JavaFX di trascinamento.
      * @throws IOException Sollevata in caso di errore di I/O.
      */
     @FXML
     private void rilasciaFolder(DragEvent dragEvent) throws IOException {
-        Dragboard dragboard = dragEvent.getDragboard();
+        final Dragboard dragboard = dragEvent.getDragboard();
         boolean success = false;
         if (dragboard.hasFiles()) {
             success = true;
-            File directory = dragboard.getFiles().get(0);
-            if (directory.isDirectory()) {
-                currentDirectory.set(directory);
-                mainStage.setTitle(currentDirectory.get().getAbsolutePath() + " - " + APP_NAME);
+            File file = dragboard.getFiles().get(0);
+            if (file.isDirectory()) {
+                currentDirectory.set(file);
+                mainStage.setTitle(currentDirectory.get().getAbsolutePath()
+                        + " - " + APP_NAME);
                 performIndexing(this::performPreProcessing);
             }
         }
