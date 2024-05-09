@@ -91,6 +91,7 @@ public class QueryService extends Service<ObservableList<TFDocumentModel>> {
 
                 //  Se è selezionato il modello alternativo tf-idf...
                 if (preferences.get("modello", null).equals(Model.TFIDF.toString())) {
+
                     //  Converte il modello tf della query nel corrispondente
                     //  tf-idf per la collezione corrente.
                     TFIDFDocumentModel tfidfModel = TFIDFDocumentModel

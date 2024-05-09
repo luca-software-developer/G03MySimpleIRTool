@@ -81,11 +81,11 @@ public class TFIDFDocumentModel extends VectorDocumentModel {
         //  vettore del titolo e del corpo del documento.
         final Map<String, Double> titleVector = tfModel.getTitleVector().entrySet().stream()
                 .map(entry -> new Pair<>(entry.getKey(),
-                entry.getValue() * Math.log(N / df.get(entry.getKey()))))
+                entry.getValue() * Math.log((double) N / df.get(entry.getKey()))))
                 .collect(Collectors.toMap(Pair::getKey, pair -> pair.getValue()));
         final Map<String, Double> contentVector = tfModel.getContentVector().entrySet().stream()
                 .map(entry -> new Pair<>(entry.getKey(),
-                entry.getValue() * Math.log(N / df.get(entry.getKey()))))
+                entry.getValue() * Math.log((double) N / df.get(entry.getKey()))))
                 .collect(Collectors.toMap(Pair::getKey, pair -> pair.getValue()));
 
         return new TFIDFDocumentModel(tfModel.getPath() == null
