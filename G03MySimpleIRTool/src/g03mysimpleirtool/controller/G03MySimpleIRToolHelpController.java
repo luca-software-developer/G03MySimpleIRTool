@@ -33,6 +33,9 @@ public class G03MySimpleIRToolHelpController implements Initializable {
     @FXML
     private Button btnStampa;
 
+    /**
+     * Indica se è in corso il caricamento della pagina.
+     */
     private ReadOnlyBooleanProperty loadingProperty;
 
     /**

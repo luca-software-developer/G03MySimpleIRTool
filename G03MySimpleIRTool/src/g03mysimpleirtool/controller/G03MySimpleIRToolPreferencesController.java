@@ -65,10 +65,21 @@ public class G03MySimpleIRToolPreferencesController implements Initializable {
     @FXML
     private ChoiceBox<String> cbModello;
 
+    /**
+     * Definisce lo {@code Stage} del gestore delle preferenze.
+     */
     private Stage stage;
 
+    /**
+     * Definisce l'oggetto {@code Preferences} per la gestione e la persistenza
+     * delle preferenze dell'utente.
+     */
     private Preferences preferences;
 
+    /**
+     * Indica se c'è stata una modifica alle preferenze che richiede un
+     * ricalcolo del modello.
+     */
     private BooleanProperty changed;
 
     /**

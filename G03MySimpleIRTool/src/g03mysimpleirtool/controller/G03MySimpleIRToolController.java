@@ -145,22 +145,51 @@ public class G03MySimpleIRToolController implements Initializable {
     @FXML
     private ProgressBar pbStatus;
 
+    /**
+     * Definisce lo {@code Stage} principale.
+     */
     private Stage mainStage;
 
+    /**
+     * Definisce la {@code Clipboard} per le operazioni di modifica.
+     */
     private Clipboard clipboard;
 
+    /**
+     * Indica se la {@code Clipboard} contiene una stringa di caratteri.
+     */
     private BooleanProperty clipboardHasString;
 
+    /**
+     * Definisce la lista osservabile contenente le statistiche collection-wide
+     * per il folder corrente.
+     */
     private ObservableList<Pair<String, String>> currentStats;
 
+    /**
+     * Definisce il task attualmente in esecuzione.
+     */
     private ObjectProperty<Service<?>> currentTask;
 
+    /**
+     * Definisce lo stato attuale dell'applicazione.
+     */
     private ObjectProperty<Status> currentStatus;
 
+    /**
+     * Definisce il progresso dell'operazione attualmente in esecuzione.
+     */
     private DoubleProperty currentProgress;
 
+    /**
+     * Definisce la directory attualmente aperta.
+     */
     private ObjectProperty<File> currentDirectory;
 
+    /**
+     * Definisce il {@code Set} di modelli TF (Text Frequency) per la collezione
+     * di documenti corrente.
+     */
     private ObjectProperty<Set<TFDocumentModel>> currentModels;
 
     /**
