@@ -133,6 +133,7 @@ public class G03MySimpleIRTool extends Application {
         stage.setTitle(APP_NAME);
         stage.centerOnScreen();
         stage.show();
+        stage.toFront();
     }
 
     /**
