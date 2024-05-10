@@ -212,6 +212,22 @@ public class Dialogs {
     }
 
     /**
+     * Visualizza una {@code Alert} di informazioni.
+     *
+     * @param contentText Testo da visualizzare nell'area del contenuto della
+     * finestra di dialogo.
+     */
+    public static void showInformation(String contentText) {
+        final Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+        final Stage stage = (Stage) informationAlert.getDialogPane().getScene().getWindow();
+        final Image icon = new Image(G03MySimpleIRTool.class.getResourceAsStream(APP_ICON));
+        stage.getIcons().add(icon);
+        informationAlert.setTitle(APP_NAME);
+        informationAlert.setContentText(contentText);
+        informationAlert.showAndWait();
+    }
+
+    /**
      * Visualizza una {@code Alert} di errore.
      *
      * @param contentText Testo da visualizzare nell'area del contenuto della

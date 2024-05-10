@@ -23,6 +23,7 @@ import static g03mysimpleirtool.util.Dialogs.chooseDirectory;
 import static g03mysimpleirtool.util.Dialogs.revealInFolder;
 import static g03mysimpleirtool.util.Dialogs.showDocumentViewer;
 import static g03mysimpleirtool.util.Dialogs.showError;
+import static g03mysimpleirtool.util.Dialogs.showInformation;
 import static g03mysimpleirtool.util.Dialogs.showStage;
 import static g03mysimpleirtool.util.Dialogs.showStatsViewer;
 import static g03mysimpleirtool.util.Statistics.calculateSummaryStatistics;
@@ -638,6 +639,9 @@ public class G03MySimpleIRToolController implements Initializable {
             currentTask.set(null);
             currentProgress.set(0);
             currentStatus.set(Status.READY);
+            if (lstResults.getItems().isEmpty()) {
+                showInformation("La ricerca non ha prodotto risultati in nessun documento.");
+            }
         });
     }
 
