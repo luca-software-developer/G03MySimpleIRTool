@@ -2,15 +2,19 @@ package g03mysimpleirtool.controller;
 
 import g03mysimpleirtool.G03MySimpleIRTool;
 import static g03mysimpleirtool.G03MySimpleIRTool.APP_HELP_HTML;
+import g03mysimpleirtool.service.HelpFetchService;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.PrinterJob;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 
@@ -25,6 +29,12 @@ public class G03MySimpleIRToolHelpController implements Initializable {
     private WebView webView;
 
     @FXML
+    private Button btnHome;
+
+    @FXML
+    private ProgressIndicator piLoading;
+
+    @FXML
     private TextField txtCerca;
 
     @FXML
@@ -32,6 +42,11 @@ public class G03MySimpleIRToolHelpController implements Initializable {
 
     @FXML
     private Button btnStampa;
+
+    /**
+     * Indica se è in corso il download della pagina.
+     */
+    private BooleanProperty fetchingProperty;
 
     /**
      * Indica se è in corso il caricamento della pagina.
@@ -48,13 +63,43 @@ public class G03MySimpleIRToolHelpController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fetchingProperty = new SimpleBooleanProperty(false);
         loadingProperty = webView.getEngine().getLoadWorker().runningProperty();
+        btnHome.disableProperty().bind(fetchingProperty.or(loadingProperty));
+        btnHome.visibleProperty().bind(fetchingProperty.or(loadingProperty).not());
+        piLoading.visibleProperty().bind(fetchingProperty.or(loadingProperty));
+        txtCerca.disableProperty().bind(fetchingProperty.or(loadingProperty));
         btnCerca.disableProperty().bind(Bindings.createBooleanBinding(
-                () -> txtCerca.getText().trim().isEmpty() || webView.getEngine().getLoadWorker().isRunning(),
-                txtCerca.textProperty(), loadingProperty));
-        btnStampa.disableProperty().bind(loadingProperty);
+                () -> fetchingProperty.get()
+                || txtCerca.getText().trim().isEmpty()
+                || webView.getEngine().getLoadWorker().isRunning(),
+                fetchingProperty, txtCerca.textProperty(), loadingProperty));
+        btnStampa.disableProperty().bind(fetchingProperty.or(loadingProperty));
         webView.getEngine().setJavaScriptEnabled(true);
-        webView.getEngine().load(G03MySimpleIRTool.class.getResource(APP_HELP_HTML).toExternalForm());
+        showHelpHTML();
+    }
+
+    /**
+     * Visualizza la pagina HTML di help attraverso la WebView.
+     */
+    private void showHelpHTML() {
+        //  Effettua il fetch della pagina di help dal webserver.
+        final HelpFetchService helpFetchService = new HelpFetchService();
+        fetchingProperty.set(true);
+        helpFetchService.setOnSucceeded(event -> {
+            //  Visualizza la pagina HTML di help attraverso la WebView.
+            fetchingProperty.set(false);
+            webView.getEngine()
+                    .loadContent(helpFetchService.getValue(), "text/html");
+        });
+        helpFetchService.setOnFailed(event -> {
+            //  Fallback su file HTML locale in caso di server non raggiungibile.
+            fetchingProperty.set(false);
+            webView.getEngine()
+                    .load(G03MySimpleIRTool.class.getResource(APP_HELP_HTML)
+                            .toExternalForm());
+        });
+        helpFetchService.start();
     }
 
     /**

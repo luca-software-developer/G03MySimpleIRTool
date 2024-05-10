@@ -64,10 +64,17 @@ public class G03MySimpleIRTool extends Application {
     public static final String APP_HELP_ICON = "icon/help.png";
 
     /**
-     * Definisce il path relativo del file HTML utilizzato view di aiuto
+     * Definisce il path relativo del file HTML utilizzato per la view di aiuto
      * dell'applicazione.
      */
     public static final String APP_HELP_HTML = "asset/help.html";
+
+    /**
+     * Definisce la URL (Uniform Resource Locator) relativa al file HTML
+     * utilizzato per la view di aiuto dell'applicazione. Il file HTML risiede
+     * su un webserver remoto (help in linea).
+     */
+    public static final String APP_HELP_URL = "http://g03mysimpleirtool.altervista.org/";
 
     /**
      * Definisce il path relativo del fragment da visualizzare per ciascun
