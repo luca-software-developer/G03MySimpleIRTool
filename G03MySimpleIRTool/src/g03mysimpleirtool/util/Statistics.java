@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * La classe {@code Statistics} fornisce metodi di utilità per il calcolo delle
@@ -19,6 +20,26 @@ public class Statistics {
      * Costruttore.
      */
     private Statistics() {
+    }
+
+    /**
+     * Calcola le frequenze di ciascuna parola all'interno di uno o più modelli.
+     *
+     * @param models Modelli forniti (varargs di TFDocumentModel).
+     * @return Restituisce le frequenze di ciascuna parola all'interno di uno o
+     * più modelli.
+     */
+    public static Map<String, Long> calculateWordFrequencies(TFDocumentModel... models) {
+        final Map<String, Long> wordFrequencies = new HashMap<>();
+        Stream.of(models)
+                .distinct()
+                .flatMap(model -> model.getVector(false).entrySet().stream())
+                .forEach(entry -> {
+                    wordFrequencies.put(entry.getKey(),
+                            wordFrequencies.getOrDefault(entry.getKey(), 0L)
+                            + entry.getValue().longValue());
+                });
+        return wordFrequencies;
     }
 
     /**

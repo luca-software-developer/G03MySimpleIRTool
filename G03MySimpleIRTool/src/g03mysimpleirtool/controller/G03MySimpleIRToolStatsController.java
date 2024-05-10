@@ -7,12 +7,10 @@ import static g03mysimpleirtool.util.Statistics.calculateWordFrequencies;
 import static g03mysimpleirtool.util.Statistics.findLeastFrequentWord;
 import static g03mysimpleirtool.util.Statistics.findMostFrequentWord;
 import java.net.URL;
-import java.util.Collections;
 import java.util.DoubleSummaryStatistics;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.function.UnaryOperator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -90,8 +88,7 @@ public class G03MySimpleIRToolStatsController implements Initializable {
      * Effettua il calcolo delle statistiche sul documento.
      */
     private void computeStatistics() {
-        final Set<TFDocumentModel> current = Collections.singleton(model);
-        final Map<String, Long> wordFrequencies = calculateWordFrequencies(current);
+        final Map<String, Long> wordFrequencies = calculateWordFrequencies(model);
         final DoubleSummaryStatistics stats = calculateSummaryStatistics(wordFrequencies);
         final UnaryOperator<String> capitalize = s -> s.isEmpty()
                 ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
@@ -101,7 +98,7 @@ public class G03MySimpleIRToolStatsController implements Initializable {
         addToStatistics("Frequenza massima", Long.toString(stats.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) stats.getMax()));
         addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", stats.getAverage()));
         addToStatistics("Frequenza minima", Long.toString(stats.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) stats.getMin()));
-        addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(current).getBagOfWords().size()));
+        addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(model).getBagOfWords().size()));
     }
 
     /**
