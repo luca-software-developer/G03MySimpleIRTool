@@ -1,15 +1,10 @@
 package g03mysimpleirtool.model;
 
-import g03mysimpleirtool.G03MySimpleIRTool;
+import g03mysimpleirtool.util.TextProcessing;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,8 +72,10 @@ public class TFDocumentModel extends VectorDocumentModel {
      * @return Restituisce il modello del documento specificato.
      */
     public static TFDocumentModel fromQuery(String query, Dictionary dictionary) {
-        final Map<String, Long> vector = Stream.of(removeStopwords(sanitizeText(query))
-                .toLowerCase().trim().split("\\s+"))
+        final Map<String, Long> vector = Stream.of(
+                TextProcessing.removeStopwords(
+                        TextProcessing.sanitizeText(query))
+                        .toLowerCase().trim().split("\\s+"))
                 .filter(word -> dictionary.getBagOfWords().contains(word))
                 .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
         return new TFDocumentModel(null, vector);
@@ -92,9 +89,10 @@ public class TFDocumentModel extends VectorDocumentModel {
      * @throws IOException Sollevata in caso di errore di I/O.
      */
     private static Map<String, Long> computeTitleVector(String path) throws IOException {
-        Optional<String> firstLine = getLineStream(path).findFirst();
+        Optional<String> firstLine = TextProcessing.getLineStream(path).findFirst();
         if (firstLine.isPresent() && !firstLine.get().trim().isEmpty()) {
-            return Stream.of(removeStopwords(sanitizeText(firstLine.get().toLowerCase().trim())).split("\\s+"))
+            return Stream.of(TextProcessing.removeStopwords(TextProcessing.sanitizeText(
+                    firstLine.get().toLowerCase().trim())).split("\\s+"))
                     .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
         }
         return new HashMap<>();
@@ -108,73 +106,12 @@ public class TFDocumentModel extends VectorDocumentModel {
      * @throws IOException Sollevata in caso di errore di I/O.
      */
     private static Map<String, Long> computeContentVector(String path) throws IOException {
-        return getLineStream(path)
+        return TextProcessing.getLineStream(path)
                 .skip(1)
-                .map(line -> sanitizeText(line))
-                .map(line -> removeStopwords(line))
+                .map(line -> TextProcessing.sanitizeText(line))
+                .map(line -> TextProcessing.removeStopwords(line))
                 .flatMap(line -> Stream.of(line.toLowerCase().trim().split("\\s+")))
                 .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
-    }
-
-    /**
-     * Effettua la rimozione delle stopwords, se abilitata e configurata.
-     *
-     * @param text Testo fornito in input.
-     * @return Restituisce il risultato della rimozione oppure {@code null} in
-     * caso di errore.
-     */
-    private static String removeStopwords(String text) {
-        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
-        if (preferences.getBoolean("filtraggioStopwords", false)) {
-            String stopwordsPath;
-            if ((stopwordsPath = preferences.get("stopwordsPath", null)) != null) {
-                try {
-                    Set<String> stopwords = getLineStream(stopwordsPath)
-                            .map(String::trim)
-                            .map(String::toLowerCase)
-                            .filter(line -> !line.isEmpty())
-                            .collect(Collectors.toSet());
-                    return String.join(" ", Stream.of(text
-                            .toLowerCase().trim().split("\\s+"))
-                            .filter(word -> !stopwords.contains(word))
-                            .collect(Collectors.toList()));
-                } catch (IOException ex) {
-                    return null;
-                }
-            }
-        }
-        return text;
-    }
-
-    /**
-     * Effettua la rimozione della punteggiatura dal testo.
-     *
-     * @param text Testo fornito in input.
-     * @return Restituisce il risultato della rimozione.
-     */
-    private static String sanitizeText(String text) {
-        final String symbols = ".,;_\\-\\(\\)\"'?!\\/";
-        return String.join(" ", Stream.of(text.split("\\s+"))
-                .map(token -> token
-                .replaceAll("^[" + symbols + "]+", "")
-                .replaceAll("[" + symbols + "]+$", ""))
-                .filter(token -> !Arrays.asList(symbols.split("")).contains(token))
-                .collect(Collectors.toList())
-        );
-    }
-
-    /**
-     * Restituisce il contenuto del documento specificato come uno
-     * {@code Stream} di linee, saltando le linee vuote.
-     *
-     * @param path Path del documento.
-     * @return Restituisce il contenuto del documento specificato come uno
-     * {@code Stream} di linee, saltando le linee vuote.
-     * @throws IOException Sollevata in caso di errore di I/O.
-     */
-    private static Stream<String> getLineStream(String path) throws IOException {
-        return Files.readAllLines(Paths.get(path)).stream()
-                .filter(line -> !line.trim().isEmpty());
     }
 
     /**

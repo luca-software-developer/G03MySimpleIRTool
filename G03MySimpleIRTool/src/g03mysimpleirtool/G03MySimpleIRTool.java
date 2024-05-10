@@ -1,6 +1,7 @@
 package g03mysimpleirtool;
 
 import java.io.IOException;
+import java.util.prefs.Preferences;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -128,13 +129,18 @@ public class G03MySimpleIRTool extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
+        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
         stage.setScene(new Scene(FXMLLoader.load(G03MySimpleIRTool.class.getResource(APP_VIEW))));
         stage.getIcons().add(new Image(G03MySimpleIRTool.class.getResourceAsStream(APP_ICON)));
         stage.setTitle(APP_NAME);
         stage.centerOnScreen();
         stage.show();
         stage.toFront();
-        stage.setMaximized(true);
+        stage.setX(preferences.getDouble("x", stage.getX()));
+        stage.setY(preferences.getDouble("y", stage.getY()));
+        stage.setWidth(preferences.getDouble("width", stage.getWidth()));
+        stage.setHeight(preferences.getDouble("height", stage.getHeight()));
+        stage.setMaximized(preferences.getBoolean("maximized", stage.isMaximized()));
     }
 
     /**

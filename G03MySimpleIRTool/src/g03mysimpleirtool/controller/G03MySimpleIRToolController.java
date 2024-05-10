@@ -25,9 +25,7 @@ import static g03mysimpleirtool.util.Dialogs.showDocumentViewer;
 import static g03mysimpleirtool.util.Dialogs.showError;
 import static g03mysimpleirtool.util.Dialogs.showStage;
 import static g03mysimpleirtool.util.Dialogs.showStatsViewer;
-import static g03mysimpleirtool.util.Statistics.calculateDistinctWords;
 import static g03mysimpleirtool.util.Statistics.calculateSummaryStatistics;
-import static g03mysimpleirtool.util.Statistics.calculateTotalWords;
 import static g03mysimpleirtool.util.Statistics.calculateWordFrequencies;
 import static g03mysimpleirtool.util.Statistics.findLeastFrequentWord;
 import static g03mysimpleirtool.util.Statistics.findMostFrequentWord;
@@ -256,21 +254,7 @@ public class G03MySimpleIRToolController implements Initializable {
      * Inizializza i binding.
      */
     private void initBindings() {
-        miApriCartella.disableProperty().bind(currentStatus.isNotEqualTo(Status.READY));
-        miChiudiCartella.disableProperty().bind(currentDirectory.isNull()
-                .or(currentStatus.isNotEqualTo(Status.READY)));
-        miAnnulla.disableProperty().bind(txtQuery.undoableProperty().not());
-        miRipeti.disableProperty().bind(txtQuery.redoableProperty().not());
-        miTaglia.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
-        miCopia.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
-        miIncolla.disableProperty().bind(clipboardHasString.not());
-        miElimina.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
-        miDeselezionaTutto.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
-        miEseguiQuery.disableProperty().bind(currentDirectory.isNull()
-                .or(currentModels.isNull())
-                .or(Bindings.createBooleanBinding(() -> txtQuery.getText().trim().isEmpty(),
-                        txtQuery.textProperty()))
-                .or(currentStatus.isNotEqualTo(Status.READY)));
+        initMenuBindings();
         btnApriCartella.disableProperty().bind(currentStatus.isNotEqualTo(Status.READY));
         btnChiudiCartella.disableProperty().bind(currentDirectory.isNull()
                 .or(currentStatus.isNotEqualTo(Status.READY)));
@@ -289,6 +273,27 @@ public class G03MySimpleIRToolController implements Initializable {
                 currentStatus, currentProgress
         ));
         pbStatus.progressProperty().bind(currentProgress);
+    }
+
+    /**
+     * Inizializza i binding relativi ai menu.
+     */
+    private void initMenuBindings() {
+        miApriCartella.disableProperty().bind(currentStatus.isNotEqualTo(Status.READY));
+        miChiudiCartella.disableProperty().bind(currentDirectory.isNull()
+                .or(currentStatus.isNotEqualTo(Status.READY)));
+        miAnnulla.disableProperty().bind(txtQuery.undoableProperty().not());
+        miRipeti.disableProperty().bind(txtQuery.redoableProperty().not());
+        miTaglia.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
+        miCopia.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
+        miIncolla.disableProperty().bind(clipboardHasString.not());
+        miElimina.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
+        miDeselezionaTutto.disableProperty().bind(txtQuery.selectedTextProperty().isEmpty());
+        miEseguiQuery.disableProperty().bind(currentDirectory.isNull()
+                .or(currentModels.isNull())
+                .or(Bindings.createBooleanBinding(() -> txtQuery.getText().trim().isEmpty(),
+                        txtQuery.textProperty()))
+                .or(currentStatus.isNotEqualTo(Status.READY)));
     }
 
     /**
@@ -504,21 +509,14 @@ public class G03MySimpleIRToolController implements Initializable {
         final Set<TFDocumentModel> current = currentModels.get();
         final Map<String, Long> wordFrequencies = calculateWordFrequencies(current);
         final DoubleSummaryStatistics statistics = calculateSummaryStatistics(wordFrequencies);
-        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
         final UnaryOperator<String> capitalize = s -> s.isEmpty()
                 ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
         currentStats.clear();
-        String suffix = "";
-        if (preferences.getBoolean("filtraggioStopwords", false)) {
-            suffix = " (escl. stopword)";
-        }
-        addToStatistics("Parola più frequente" + suffix, capitalize.apply(findMostFrequentWord(wordFrequencies)));
-        addToStatistics("Parola meno frequente" + suffix, capitalize.apply(findLeastFrequentWord(wordFrequencies)));
-        addToStatistics("Frequenza massima" + suffix, Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
-        addToStatistics("Frequenza media" + suffix, String.format(Locale.US, "%.2f", statistics.getAverage()));
-        addToStatistics("Frequenza minima" + suffix, Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
-        addToStatistics("Numero di parole distinte" + suffix, Long.toString(calculateDistinctWords(wordFrequencies)));
-        addToStatistics("Numero di parole totali" + suffix, Long.toString(calculateTotalWords(wordFrequencies)));
+        addToStatistics("Parola più frequente", capitalize.apply(findMostFrequentWord(wordFrequencies)));
+        addToStatistics("Parola meno frequente", capitalize.apply(findLeastFrequentWord(wordFrequencies)));
+        addToStatistics("Frequenza massima", Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
+        addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", statistics.getAverage()));
+        addToStatistics("Frequenza minima", Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
         addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(current).getBagOfWords().size()));
         addToStatistics("Numero di documenti", Integer.toString(current.size()));
     }
@@ -780,6 +778,12 @@ public class G03MySimpleIRToolController implements Initializable {
                 showError("Errore durante la chiusura della cartella.");
             }
         }
+        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
+        preferences.putDouble("x", mainStage.getX());
+        preferences.putDouble("y", mainStage.getY());
+        preferences.putDouble("width", mainStage.getWidth());
+        preferences.putDouble("height", mainStage.getHeight());
+        preferences.putBoolean("maximized", mainStage.isMaximized());
         Platform.exit();
     }
 

@@ -91,32 +91,4 @@ public class Statistics {
         return "";
     }
 
-    /**
-     * Calcola il numero di parole distinte nel vettore TF (Text Frequency)
-     * fornito.
-     *
-     * @param wordFrequencies Vettore TF (Text Frequency).
-     * @return Restituisce il numero di parole distinte nel vettore TF (Text
-     * Frequency) fornito.
-     */
-    public static long calculateDistinctWords(Map<String, Long> wordFrequencies) {
-        return wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .count();
-    }
-
-    /**
-     * Calcola il numero totale di parole nel vettore TF (Text Frequency)
-     * fornito.
-     *
-     * @param wordFrequencies Vettore TF (Text Frequency).
-     * @return Restituisce il numero totale di parole nel vettore TF (Text
-     * Frequency) fornito.
-     */
-    public static long calculateTotalWords(Map<String, Long> wordFrequencies) {
-        return wordFrequencies.entrySet().stream()
-                .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.summingDouble(entry -> entry.getValue())).longValue();
-    }
-
 }
