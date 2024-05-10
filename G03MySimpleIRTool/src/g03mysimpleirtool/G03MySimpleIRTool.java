@@ -134,6 +134,7 @@ public class G03MySimpleIRTool extends Application {
         stage.centerOnScreen();
         stage.show();
         stage.toFront();
+        stage.setMaximized(true);
     }
 
     /**

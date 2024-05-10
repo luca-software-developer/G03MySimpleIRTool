@@ -25,7 +25,7 @@
                             <children>
                                 <VBox spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                     <children>
-                                        <Label text="Utilizzare questa impostazione per differenziare il contributo fornito allo score dal titolo e dal corpo del documento. Selezionare i contributi relativi al titolo e al corpo del documento." textFill="#000000b2" wrapText="true">
+                                        <Label text="Utilizzare questa impostazione per differenziare il contributo fornito allo score dal titolo e dal corpo del documento. Selezionare i contributi relativi al titolo e al corpo del documento. L'abilitazione o la disabilitazione di questa funzionalità e/o la modifica dei contributi causa il ricalcolo del modello." textFill="#000000b2" wrapText="true">
                                             <font>
                                                 <Font name="System Italic" size="12.0" />
                                             </font>
@@ -81,7 +81,7 @@
                             <children>
                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                     <children>
-                                        <Label text="Alcune parole sono più rilevanti di altre ai fini della comprensione di un documento. Le parole considerate irrilevanti e non discriminative (stopwords) possono essere eliminate riducendo la dimensione dei vettori: articoli, congiunzioni, particelle pronominali, verbi frequenti ecc. Attraverso questa sezione è possibile selezionare un file esterno contenente una lista di stopwords. Il file esterno deve presentare una stopword per ciascuna riga." textFill="#000000b2" wrapText="true">
+                                        <Label text="Alcune parole sono più rilevanti di altre ai fini della comprensione di un documento. Le parole considerate irrilevanti e non discriminative (stopwords) possono essere eliminate riducendo la dimensione dei vettori: articoli, congiunzioni, particelle pronominali, verbi frequenti ecc. Attraverso questa sezione è possibile selezionare un file esterno contenente una lista di stopwords. Il file esterno deve presentare una stopword per ciascuna riga. L'abilitazione o la disabilitazione di questa funzionalità e/o la scelta di un file diverso causa il ricalcolo del modello e delle statistiche." textFill="#000000b2" wrapText="true">
                                             <font>
                                                 <Font name="System Italic" size="12.0" />
                                             </font>

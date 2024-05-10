@@ -204,6 +204,7 @@ public class G03MySimpleIRToolPreferencesController implements Initializable {
             txtStopwords.setText(stopwordsFile.getName());
             preferences.put("stopwordsPath", stopwordsFile.getAbsolutePath());
         }
+        changed.set(true);
     }
 
     /**

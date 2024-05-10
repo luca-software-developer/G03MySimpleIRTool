@@ -124,7 +124,7 @@ public class TFDocumentModel extends VectorDocumentModel {
      * caso di errore.
      */
     private static String removeStopwords(String text) {
-        Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
+        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
         if (preferences.getBoolean("filtraggioStopwords", false)) {
             String stopwordsPath;
             if ((stopwordsPath = preferences.get("stopwordsPath", null)) != null) {

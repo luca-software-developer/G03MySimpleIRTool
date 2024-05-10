@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.UnaryOperator;
+import java.util.prefs.Preferences;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -503,16 +504,21 @@ public class G03MySimpleIRToolController implements Initializable {
         final Set<TFDocumentModel> current = currentModels.get();
         final Map<String, Long> wordFrequencies = calculateWordFrequencies(current);
         final DoubleSummaryStatistics statistics = calculateSummaryStatistics(wordFrequencies);
+        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
         final UnaryOperator<String> capitalize = s -> s.isEmpty()
                 ? s : s.substring(0, 1).toUpperCase() + s.substring(1);
         currentStats.clear();
-        addToStatistics("Parola più frequente", capitalize.apply(findMostFrequentWord(wordFrequencies)));
-        addToStatistics("Parola meno frequente", capitalize.apply(findLeastFrequentWord(wordFrequencies)));
-        addToStatistics("Frequenza massima", Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
-        addToStatistics("Frequenza media", String.format(Locale.US, "%.2f", statistics.getAverage()));
-        addToStatistics("Frequenza minima", Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
-        addToStatistics("Numero di parole distinte", Long.toString(calculateDistinctWords(wordFrequencies)));
-        addToStatistics("Numero di parole totali", Long.toString(calculateTotalWords(wordFrequencies)));
+        String suffix = "";
+        if (preferences.getBoolean("filtraggioStopwords", false)) {
+            suffix = " (escl. stopword)";
+        }
+        addToStatistics("Parola più frequente" + suffix, capitalize.apply(findMostFrequentWord(wordFrequencies)));
+        addToStatistics("Parola meno frequente" + suffix, capitalize.apply(findLeastFrequentWord(wordFrequencies)));
+        addToStatistics("Frequenza massima" + suffix, Long.toString(statistics.getMax() == Double.NEGATIVE_INFINITY ? 0 : (long) statistics.getMax()));
+        addToStatistics("Frequenza media" + suffix, String.format(Locale.US, "%.2f", statistics.getAverage()));
+        addToStatistics("Frequenza minima" + suffix, Long.toString(statistics.getMin() == Double.POSITIVE_INFINITY ? 0 : (long) statistics.getMin()));
+        addToStatistics("Numero di parole distinte" + suffix, Long.toString(calculateDistinctWords(wordFrequencies)));
+        addToStatistics("Numero di parole totali" + suffix, Long.toString(calculateTotalWords(wordFrequencies)));
         addToStatistics("Dimensione del dizionario", Integer.toString(new Dictionary(current).getBagOfWords().size()));
         addToStatistics("Numero di documenti", Integer.toString(current.size()));
     }
