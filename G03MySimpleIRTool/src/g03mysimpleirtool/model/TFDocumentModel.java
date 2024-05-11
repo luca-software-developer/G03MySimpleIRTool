@@ -114,14 +114,4 @@ public class TFDocumentModel extends VectorDocumentModel {
                 .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
     }
 
-    /**
-     * Restituisce il modello rappresentato come stringa.
-     *
-     * @return Restituisce il modello rappresentato come stringa.
-     */
-    @Override
-    public String toString() {
-        return "TFDocumentModel{" + "path=" + getPath() + ", hash=" + getHash() + ", titleVector=" + getTitleVector() + ", contentVector=" + getContentVector() + '}';
-    }
-
 }

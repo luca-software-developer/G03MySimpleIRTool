@@ -53,15 +53,16 @@ public class Dictionary {
      */
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " { " + String.join("", Stream.of(getClass().getDeclaredFields())
-                .map(field -> {
-                    try {
-                        return field.getName() + ": " + field.get(this) + ' ';
-                    } catch (IllegalArgumentException | IllegalAccessException ex) {
-                        return "";
-                    }
-                })
-                .collect(Collectors.toList())
+        return getClass().getSimpleName() + " { " + String.join("",
+                Stream.of(getClass().getDeclaredFields())
+                        .map(field -> {
+                            try {
+                                return field.getName() + ": " + field.get(this) + ' ';
+                            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                                return "";
+                            }
+                        })
+                        .collect(Collectors.toList())
         ) + '}';
     }
 

@@ -92,14 +92,4 @@ public class TFIDFDocumentModel extends VectorDocumentModel {
                 ? null : tfModel.getPath().toString(), titleVector, contentVector);
     }
 
-    /**
-     * Restituisce il modello rappresentato come stringa.
-     *
-     * @return Restituisce il modello rappresentato come stringa.
-     */
-    @Override
-    public String toString() {
-        return "TFIDFDocumentModel{" + "path=" + getPath() + ", hash=" + getHash() + ", titleVector=" + getTitleVector() + ", contentVector=" + getContentVector() + '}';
-    }
-
 }

@@ -233,7 +233,9 @@ public class VectorDocumentModel extends DocumentModel {
      */
     @Override
     public String toString() {
-        return "TFDocumentModel{" + "path=" + getPath() + ", hash=" + getHash() + ", titleVector=" + getTitleVector() + ", contentVector=" + getContentVector() + '}';
+        return getClass().getSimpleName() + " { " + "path: " + getPath()
+                + ", hash: " + getHash() + ", titleVector: " + getTitleVector()
+                + ", contentVector: " + getContentVector() + " }";
     }
 
 }

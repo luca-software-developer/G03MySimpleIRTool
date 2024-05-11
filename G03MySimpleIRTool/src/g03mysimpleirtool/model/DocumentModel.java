@@ -93,7 +93,8 @@ public class DocumentModel implements Serializable {
      */
     @Override
     public String toString() {
-        return "DocumentModel{" + "path=" + path + ", hash=" + hash + '}';
+        return getClass().getSimpleName() + " { " + "path: " + getPath()
+                + ", hash: " + getHash() + " }";
     }
 
 }
