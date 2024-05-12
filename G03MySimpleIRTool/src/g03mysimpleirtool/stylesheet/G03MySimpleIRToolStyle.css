@@ -1,3 +1,21 @@
+.split-pane:horizontal > .split-pane-divider,
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: -fx-box-border, -fx-base;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-pref-width: 5px;
+    -fx-background-insets: 0;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.tree-view {
+    -fx-background-insets: 0, 1 0 1 0;
+}
+
 .list-view, .list-cell {
     -fx-background-color: transparent;
 }

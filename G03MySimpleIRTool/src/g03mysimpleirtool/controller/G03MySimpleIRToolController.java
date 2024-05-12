@@ -229,6 +229,7 @@ public class G03MySimpleIRToolController implements Initializable {
         Platform.runLater(() -> {
             mainStage = (Stage) txtQuery.getScene().getWindow();
             mainStage.setOnCloseRequest(this::onCloseRequest);
+            reopenLastFolder();
         });
     }
 
@@ -309,7 +310,27 @@ public class G03MySimpleIRToolController implements Initializable {
      */
     private void initResultsView() {
         lstResults.setCellFactory((ListView<TFDocumentModel> param) -> new ResultItemListCellImpl());
+    }
 
+    /**
+     * Riapre l'ultimo folder su cui si stava lavorando, se presente.
+     */
+    private void reopenLastFolder() {
+        final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
+        String lastFolderPath = preferences.get("path", null);
+        if (lastFolderPath != null) {
+            File lastFolder = new File(lastFolderPath);
+            if (Files.exists(Paths.get(lastFolder.toURI()))) {
+                currentDirectory.set(new File(lastFolderPath));
+                mainStage.setTitle(currentDirectory.get().getAbsolutePath()
+                        + " - " + APP_NAME);
+                try {
+                    performIndexing(this::performPreProcessing);
+                } catch (IOException ex) {
+                    showError("Errore durante l'apertura della cartella.");
+                }
+            }
+        }
     }
 
     /**
@@ -775,19 +796,22 @@ public class G03MySimpleIRToolController implements Initializable {
      */
     @FXML
     private void esci(ActionEvent actionEvent) {
-        if (currentDirectory.get() != null) {
-            try {
-                chiudiCartella(actionEvent);
-            } catch (IOException ex) {
-                showError("Errore durante la chiusura della cartella.");
-            }
-        }
         final Preferences preferences = Preferences.userNodeForPackage(G03MySimpleIRTool.class);
         preferences.putDouble("x", mainStage.getX());
         preferences.putDouble("y", mainStage.getY());
         preferences.putDouble("width", mainStage.getWidth());
         preferences.putDouble("height", mainStage.getHeight());
         preferences.putBoolean("maximized", mainStage.isMaximized());
+        if (currentDirectory.get() != null) {
+            preferences.put("path", currentDirectory.get().getAbsolutePath());
+            try {
+                chiudiCartella(actionEvent);
+            } catch (IOException ex) {
+                showError("Errore durante la chiusura della cartella.");
+            }
+        } else {
+            preferences.remove("path");
+        }
         Platform.exit();
     }
 

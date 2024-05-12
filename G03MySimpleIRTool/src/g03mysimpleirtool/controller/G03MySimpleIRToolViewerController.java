@@ -1,11 +1,12 @@
 package g03mysimpleirtool.controller;
 
 import static g03mysimpleirtool.util.Dialogs.showError;
+import g03mysimpleirtool.util.TextProcessing;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,10 +57,13 @@ public class G03MySimpleIRToolViewerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            txtDocument.setText(String.join("\n", Files.readAllLines(path)));
+            txtDocument.setText(String.join("\n",
+                    TextProcessing.getLineStream(path.toString())
+                            .collect(Collectors.toList())));
         } catch (IOException ex) {
             showError("Errore durante l'apertura del file.");
-            Platform.runLater(() -> ((Stage) txtDocument.getScene().getWindow()).close());
+            Platform.runLater(() -> ((Stage) txtDocument.getScene()
+                    .getWindow()).close());
         }
     }
 

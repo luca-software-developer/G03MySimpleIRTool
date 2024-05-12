@@ -1,6 +1,6 @@
 package g03mysimpleirtool.service;
 
-import g03mysimpleirtool.util.TextFileFilter;
+import g03mysimpleirtool.util.DocumentFilter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -67,7 +67,7 @@ public class IndexingService extends Service<TreeItem<Path>> {
                 final TreeItem<Path> root = new TreeItem<>(path);
                 root.setExpanded(true);
                 updateProgress(visitedNodes.get(), totalNodes);
-                visitTree(root, new TextFileFilter(), totalNodes);
+                visitTree(root, new DocumentFilter(), totalNodes);
                 return root;
             }
 

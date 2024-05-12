@@ -4,7 +4,7 @@ import static g03mysimpleirtool.G03MySimpleIRTool.APP_CACHE_FILE;
 import g03mysimpleirtool.model.Dictionary;
 import g03mysimpleirtool.model.TFDocumentModel;
 import static g03mysimpleirtool.util.Dialogs.showError;
-import g03mysimpleirtool.util.TextFileFilter;
+import g03mysimpleirtool.util.DocumentFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class PreProcessingService extends Service<Set<TFDocumentModel>> {
             protected Set<TFDocumentModel> call() throws Exception {
                 final AtomicLong nodes = new AtomicLong(0);
                 final long totalNodes = Files.walk(Paths.get(path))
-                        .filter(new TextFileFilter())
+                        .filter(new DocumentFilter())
                         .count();
                 updateProgress(nodes.get(), totalNodes);
 
@@ -95,7 +95,7 @@ public class PreProcessingService extends Service<Set<TFDocumentModel>> {
 
                 //  Per ciascun file di testo nel folder...
                 Files.walk(Paths.get(path))
-                        .filter(new TextFileFilter())
+                        .filter(new DocumentFilter())
                         .forEach(path -> {
                             boolean cachedAndValid = false;
                             //  Se il modello per quel file è già in cache...

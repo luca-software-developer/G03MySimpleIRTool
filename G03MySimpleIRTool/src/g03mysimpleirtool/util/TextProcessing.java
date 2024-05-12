@@ -1,6 +1,7 @@
 package g03mysimpleirtool.util;
 
 import g03mysimpleirtool.G03MySimpleIRTool;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,6 +10,9 @@ import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.rtf.RTFEditorKit;
 
 /**
  * La classe {@code TextProcessing} fornisce metodi di utilità per
@@ -79,8 +83,23 @@ public class TextProcessing {
      * @throws IOException Sollevata in caso di errore di I/O.
      */
     public static Stream<String> getLineStream(String path) throws IOException {
-        return Files.readAllLines(Paths.get(path)).stream()
-                .filter(line -> !line.trim().isEmpty());
+        if (path.endsWith(".rtf")) {
+            final RTFEditorKit rtfEditorKit = new RTFEditorKit();
+            final Document document = rtfEditorKit.createDefaultDocument();
+            try {
+                rtfEditorKit.read(new ByteArrayInputStream(
+                        Files.readAllBytes(Paths.get(path))), document, 0);
+                return Stream.of(document.getText(0, document.getLength())
+                        .split("\n"));
+            } catch (BadLocationException ex) {
+                throw new IllegalArgumentException(ex.getMessage());
+            }
+        } else if (path.endsWith(".txt")) {
+            return Files.readAllLines(Paths.get(path)).stream()
+                    .filter(line -> !line.trim().isEmpty());
+        } else {
+            throw new IllegalArgumentException("Tipo di documento non supportato.");
+        }
     }
 
 }
