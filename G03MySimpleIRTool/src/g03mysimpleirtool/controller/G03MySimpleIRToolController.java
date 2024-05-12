@@ -323,7 +323,7 @@ public class G03MySimpleIRToolController implements Initializable {
             if (Files.exists(Paths.get(lastFolder.toURI()))) {
                 currentDirectory.set(new File(lastFolderPath));
                 mainStage.setTitle(currentDirectory.get().getAbsolutePath()
-                        + " - " + APP_NAME);
+                        + " — " + APP_NAME);
                 try {
                     performIndexing(this::performPreProcessing);
                 } catch (IOException ex) {
@@ -592,7 +592,7 @@ public class G03MySimpleIRToolController implements Initializable {
             if (file.isDirectory()) {
                 currentDirectory.set(file);
                 mainStage.setTitle(currentDirectory.get().getAbsolutePath()
-                        + " - " + APP_NAME);
+                        + " — " + APP_NAME);
                 performIndexing(this::performPreProcessing);
             }
         }
@@ -617,7 +617,7 @@ public class G03MySimpleIRToolController implements Initializable {
             currentDirectory.set(chooseDirectory(mainStage));
         }
         if (currentDirectory.get() != null) {
-            mainStage.setTitle(currentDirectory.get().getAbsolutePath() + " - " + APP_NAME);
+            mainStage.setTitle(currentDirectory.get().getAbsolutePath() + " — " + APP_NAME);
         }
         performIndexing(this::performPreProcessing);
     }
