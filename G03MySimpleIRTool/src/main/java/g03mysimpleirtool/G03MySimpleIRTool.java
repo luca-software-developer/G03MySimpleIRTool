@@ -22,52 +22,52 @@ public class G03MySimpleIRTool extends Application {
     /**
      * Definisce il path relativo della view principale dell'applicazione.
      */
-    public static final String APP_VIEW = "view/G03MySimpleIRToolView.fxml";
+    public static final String APP_VIEW = "/view/G03MySimpleIRToolView.fxml";
 
     /**
      * Definisce il path relativo dell'icona dell'applicazione visualizzata
      * nella barra del titolo e nelle finestre di dialogo.
      */
-    public static final String APP_ICON = "icon/icon.png";
+    public static final String APP_ICON = "/icon/icon.png";
 
     /**
      * Definisce il path relativo della view di preferenze dell'applicazione.
      */
-    public static final String APP_PREFS_VIEW = "view/G03MySimpleIRToolPreferencesView.fxml";
+    public static final String APP_PREFS_VIEW = "/view/G03MySimpleIRToolPreferencesView.fxml";
 
     /**
      * Definisce il path relativo dell'icona della view di preferenze
      * dell'applicazione.
      */
-    public static final String APP_PREFS_ICON = "icon/settings.png";
+    public static final String APP_PREFS_ICON = "/icon/settings.png";
 
     /**
      * Definisce il path relativo della view di informazioni sull'applicazione.
      */
-    public static final String APP_ABOUT_VIEW = "view/G03MySimpleIRToolAboutView.fxml";
+    public static final String APP_ABOUT_VIEW = "/view/G03MySimpleIRToolAboutView.fxml";
 
     /**
      * Definisce il path relativo dell'icona della view di informazioni
      * sull'applicazione.
      */
-    public static final String APP_ABOUT_ICON = "icon/about.png";
+    public static final String APP_ABOUT_ICON = "/icon/about.png";
 
     /**
      * Definisce il path relativo della view di aiuto dell'applicazione.
      */
-    public static final String APP_HELP_VIEW = "view/G03MySimpleIRToolHelpView.fxml";
+    public static final String APP_HELP_VIEW = "/view/G03MySimpleIRToolHelpView.fxml";
 
     /**
      * Definisce il path relativo dell'icona della view di aiuto
      * dell'applicazione.
      */
-    public static final String APP_HELP_ICON = "icon/help.png";
+    public static final String APP_HELP_ICON = "/icon/help.png";
 
     /**
      * Definisce il path relativo del file HTML utilizzato per la view di aiuto
      * dell'applicazione.
      */
-    public static final String APP_HELP_HTML = "asset/help.html";
+    public static final String APP_HELP_HTML = "/asset/help.html";
 
     /**
      * Definisce la URL (Uniform Resource Locator) relativa al file HTML
@@ -80,47 +80,47 @@ public class G03MySimpleIRTool extends Application {
      * Definisce il path relativo del fragment da visualizzare per ciascun
      * {@code TreeItem} nella vista della directory corrente.
      */
-    public static final String APP_TREEITEM_FRAGMENT = "fragment/TreeItemFragment.fxml";
+    public static final String APP_TREEITEM_FRAGMENT = "/fragment/TreeItemFragment.fxml";
 
     /**
      * Definisce il path relativo del fragment da visualizzare per ciascun
      * risultato.
      */
-    public static final String APP_RESULT_FRAGMENT = "fragment/ResultFragment.fxml";
+    public static final String APP_RESULT_FRAGMENT = "/fragment/ResultFragment.fxml";
 
     /**
      * Definisce il path relativo dell'icona che rappresenta una cartella.
      */
-    public static final String APP_FOLDER_ICON = "icon/folder.png";
+    public static final String APP_FOLDER_ICON = "/icon/folder.png";
 
     /**
      * Definisce il path relativo dell'icona che rappresenta un documento.
      */
-    public static final String APP_DOCUMENT_ICON = "icon/document.png";
+    public static final String APP_DOCUMENT_ICON = "/icon/document.png";
 
     /**
      * Definisce il path relativo della view del visualizzatore di documenti
      * integrato dell'applicazione.
      */
-    public static final String APP_VIEWER_VIEW = "view/G03MySimpleIRToolViewerView.fxml";
+    public static final String APP_VIEWER_VIEW = "/view/G03MySimpleIRToolViewerView.fxml";
 
     /**
      * Definisce il path relativo dell'icona del visualizzatore di documenti
      * integrato dell'applicazione.
      */
-    public static final String APP_VIEWER_ICON = "icon/view.png";
+    public static final String APP_VIEWER_ICON = "/icon/view.png";
 
     /**
      * Definisce il path relativo della view del visualizzatore di statistiche
      * dell'applicazione.
      */
-    public static final String APP_STATS_VIEW = "view/G03MySimpleIRToolStatsView.fxml";
+    public static final String APP_STATS_VIEW = "/view/G03MySimpleIRToolStatsView.fxml";
 
     /**
      * Definisce il path relativo dell'icona del visualizzatore di statistiche
      * dell'applicazione.
      */
-    public static final String APP_STATS_ICON = "icon/stats.png";
+    public static final String APP_STATS_ICON = "/icon/stats.png";
 
     /**
      * Definisce il path relativo del file di cache dei modelli.
