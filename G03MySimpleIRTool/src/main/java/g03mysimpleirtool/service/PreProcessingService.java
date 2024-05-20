@@ -84,8 +84,9 @@ public class PreProcessingService extends Service<Set<TFDocumentModel>> {
                     try (ObjectInputStream objectInputStream = new ObjectInputStream(
                             new FileInputStream(APP_CACHE_FILE))) {
                         cache = (Map<String, TFDocumentModel>) objectInputStream.readObject();
-                    } catch (ClassNotFoundException ex) {
-                        cache = null;
+                    } catch (IOException ex) {
+                        cache = new HashMap<>();
+                        Platform.runLater(() -> showError("Errore durante l'accesso alla cache."));
                     }
                     //  Li aggiunge alla mappa con tutti i modelli.
                     models.putAll(cache);
