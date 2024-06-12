@@ -141,13 +141,13 @@ public class G03MySimpleIRTool extends Application {
         stage.getIcons().add(new Image(G03MySimpleIRTool.class.getResourceAsStream(APP_ICON)));
         stage.setTitle(APP_NAME);
         stage.centerOnScreen();
-        stage.show();
         stage.toFront();
         stage.setX(preferences.getDouble("x", stage.getX()));
         stage.setY(preferences.getDouble("y", stage.getY()));
         stage.setWidth(preferences.getDouble("width", stage.getWidth()));
         stage.setHeight(preferences.getDouble("height", stage.getHeight()));
         stage.setMaximized(preferences.getBoolean("maximized", stage.isMaximized()));
+        stage.show();
     }
 
     /**
