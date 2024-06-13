@@ -150,6 +150,7 @@ public class G03MySimpleIRToolPreferencesController implements Initializable {
         }
         cbModello.getItems().setAll(Model.TF.toString(), Model.TFIDF.toString());
         cbModello.setValue(preferences.get("modello", Model.TF.toString()));
+        changed.set(false);
     }
 
     /**
