@@ -93,6 +93,7 @@ public class TFDocumentModel extends VectorDocumentModel {
         if (firstLine.isPresent() && !firstLine.get().trim().isEmpty()) {
             return Stream.of(TextProcessing.removeStopwords(TextProcessing.sanitizeText(
                     firstLine.get().toLowerCase().trim())).split("\\s+"))
+                    .filter(token -> !token.isEmpty())
                     .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
         }
         return new HashMap<>();
@@ -111,6 +112,7 @@ public class TFDocumentModel extends VectorDocumentModel {
                 .map(line -> TextProcessing.sanitizeText(line))
                 .map(line -> TextProcessing.removeStopwords(line))
                 .flatMap(line -> Stream.of(line.toLowerCase().trim().split("\\s+")))
+                .filter(token -> !token.isEmpty())
                 .collect(Collectors.groupingBy(String::toString, Collectors.counting()));
     }
 

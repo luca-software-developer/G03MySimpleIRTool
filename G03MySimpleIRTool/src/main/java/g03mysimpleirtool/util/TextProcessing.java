@@ -63,12 +63,12 @@ public class TextProcessing {
      * @return Restituisce il risultato della rimozione.
      */
     public static String sanitizeText(String text) {
-        final String symbols = ".,;_\\-\\(\\)\"'?!\\/";
-        return String.join(" ", Stream.of(text.split("\\s+"))
+        final String allowed = "a-zA-Z0-9";
+        return String.join(" ", Stream.of(text.split(",|\\s+"))
                 .map(token -> token
-                .replaceAll("^[" + symbols + "]+", "")
-                .replaceAll("[" + symbols + "]+$", ""))
-                .filter(token -> !Arrays.asList(symbols.split("")).contains(token))
+                .replaceAll("^[^" + allowed + "]+", "")
+                .replaceAll("[^" + allowed + "]+$", ""))
+                .filter(token -> !Arrays.asList(allowed.split("")).contains(token))
                 .collect(Collectors.toList())
         );
     }
@@ -90,7 +90,8 @@ public class TextProcessing {
                 rtfEditorKit.read(new ByteArrayInputStream(
                         Files.readAllBytes(Paths.get(path))), document, 0);
                 return Stream.of(document.getText(0, document.getLength())
-                        .split("\n"));
+                        .split("\n"))
+                        .filter(line -> !line.trim().isEmpty());
             } catch (BadLocationException ex) {
                 throw new IllegalArgumentException(ex.getMessage());
             }
